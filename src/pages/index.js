@@ -1,4 +1,4 @@
-import Login from "../ui/partials/login/_index"
+import LoginIndexComponent from "../ui/partials/login/_index"
 export const getStaticProps = async () => {
   return {
     props: {
@@ -8,9 +8,5 @@ export const getStaticProps = async () => {
 }
 
 export default function LoginPage() {
-  return (
-    <>
-      <Login />
-    </>
-  )
+  return <LoginIndexComponent />
 }

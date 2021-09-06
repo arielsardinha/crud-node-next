@@ -9,7 +9,7 @@ export function AuthProvider({ children }) {
     async function signIn({ email, password }) {
         const { token } = await signInRequest({ email, password })
         localStorage.setItem('myToken', token)
-        router.push('/sistem')
+        router.push('/user')
     }
     return (
         <AuthContext.Provider value={{ signIn }}>
