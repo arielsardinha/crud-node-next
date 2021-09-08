@@ -5,7 +5,6 @@ import { ContainerStyled } from "./_index.styled"
 import { useContext } from "react"
 import { useForm } from "react-hook-form"
 import { AuthContext } from "../../../context/AuthContext"
-// import { TextField } from "@material-ui/core";
 
 const LoginIndexComponent = () => {
     const { register, handleSubmit } = useForm();
