@@ -8,6 +8,7 @@ export function AuthProvider({ children }) {
     const router = useRouter()
     async function signIn({ email, password }) {
         const { token } = await signInRequest({ email, password })
+        console.log(token)
         localStorage.setItem('myToken', token)
         router.push('/user')
     }

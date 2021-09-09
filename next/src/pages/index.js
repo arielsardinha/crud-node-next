@@ -7,6 +7,22 @@ export const getStaticProps = async () => {
   }
 }
 
-export default function LoginPage() {
+function LoginPage() {
   return <LoginIndexComponent />
 }
+
+// export const getServerSideProps = async (ctx) => {
+//   const token = localStorage.getItem("myToken")
+//   if (!token) {
+//     return {
+//       redirect: {
+//         destination: "/index",
+//         permanent: false,
+//       },
+//     };
+//   }
+//   return {
+//     props: {}
+//   }
+// }
+export default LoginPage
