@@ -1,40 +1,81 @@
 const express = require('express')
+const { uuid } = require('uuidv4');
+var cors = require('cors')
 
 module.exports = function () {
     const app = express()
     app.set('port', 8090)
     app.use(express.json())
+    app.use(cors())
     // app.use(express.urlencoded({ extended: true }))
-    const routes = express.Router()
+    const count = 2
 
-    const users = []
+    const users =
+        [
+            {
+                id: 0,
+                email: 'email@email',
+                name: 'Ariel',
+                idade: 28,
+                newDate: '09/09/2021',
+                data: '16/04/1993',
+                cpf: 12323123,
+                password: '1234',
+                token: '',
+                admin: true
+            },
+            {
+                id: 1,
+                email: 'teste@teste',
+                name: 'Paulo',
+                idade: 40,
+                newDate: '09/09/2021',
+                data: '16/04/1993',
+                cpf: 12323123,
+                password: '1234',
+                token: '',
+                admin: false
+            }
+        ]
 
-    app.post('/register', async (req, res) => {
-        const { name, idade } = await req.body
-        users.push({ name, idade })
-        return res.send(users)
+    app.post('/user/register', async (req, res) => {
+        const { email, name, idade, data, password, cpf, token = '', admin = false } = await req.body
+        count += count
+        users.push({ email, name, idade, password, token, admin, id: count, data, cpf, newDate: new Date() })
+        return res.json(users)
+    })
+
+    app.post('/user/token', async (req, res) => {
+        const { email, password } = await req.body
+        for (let i = 0; i <= users.length; i++) {
+            if (email === users[i].email && password === users[i].password) {
+                const token = uuid()
+                users[i].token = token
+                return res.json({ data: users[i], token: token })
+            }
+        }
     })
 
     app.get('/user', (req, res) => {
-        return res.send(users)
+        return res.json(users)
     })
 
     app.get('/user/:index', async (req, res) => {
         const { index } = await req.params
-        return res.send(users[index])
+        return res.json(users[index])
     })
 
     app.put('/edit/:index', async (req, res) => {
-        const { name, idade } = await req.body
+        const { email, name, idade, data, password, cpf, token = '', admin = false } = await req.body
         const { index } = req.params
-        users[index] = { name, idade }
-        return res.send(users)
+        users[index] = { email, name, idade, password, token, admin, data, cpf }
+        return res.json(users)
     })
 
     app.delete('/delete/:index', (req, res) => {
         const { index } = req.params
         users.splice(index, 1)
-        return res.send(users)
+        return res.json(users)
     })
     return app;
 }

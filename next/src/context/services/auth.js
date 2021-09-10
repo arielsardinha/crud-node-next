@@ -1,5 +1,5 @@
 import { api } from './api'
 
 export async function signInRequest(data) {
-    return await api.post('/token', data).then(({ data }) => data)
+    return await api.post('user/token', data).then(({ data }) => data)
 }
