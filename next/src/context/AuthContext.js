@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
 import { useRouter } from "next/router"
-import { signInRequest } from "./services/auth";
+import { registerRequest, signInRequest } from "./services/auth";
 import { setCookie } from "nookies";
 
 export const AuthContext = createContext();
@@ -18,8 +18,12 @@ export function AuthProvider({ children }) {
         setCookie(undefined, "nextauth-token", token, { maxAge: 60 * 60 * 1, })
         router.push('/user')
     }
+    async function registerIn(data) {
+        await registerRequest(data)
+        router.push('/login')
+    }
     return (
-        <AuthContext.Provider value={{ signIn, data }}>
+        <AuthContext.Provider value={{ signIn, data, registerIn }}>
             {children}
         </AuthContext.Provider>
     )
