@@ -38,6 +38,7 @@ module.exports = function () {
             }
         ]
 
+    // registrar
     app.post('/user/register', async (req, res) => {
         const { email, name, idade, data, password, cpf, admin = false } = await req.body
         try {
@@ -50,6 +51,7 @@ module.exports = function () {
 
     })
 
+    // validar acesso
     app.post('/user/token', async (req, res) => {
         const { email, password } = await req.body
         for (let i = 0; i <= users.length; i++) {
@@ -66,15 +68,25 @@ module.exports = function () {
         }
     })
 
+    // return
     app.get('/user', (req, res) => {
         return res.json(users)
     })
 
+    // return por nome
     app.get('/user/:index', async (req, res) => {
         const { index } = await req.params
-        return res.json(users[index])
+        try {
+            for (let i = 0; i < users.length; i++) {
+                if (index === users[i].name)
+                    return res.json(users[i])
+            }
+        } catch (error) {
+            return res.sendStatus(400)
+        }
     })
 
+    // EDITA
     app.put('/edit/:index', async (req, res) => {
         const { email, name, idade, data, password, cpf, token = '', admin = false } = await req.body
         const { index } = req.params
@@ -82,12 +94,13 @@ module.exports = function () {
         return res.json(users)
     })
 
+    // deleta
     app.delete('/delete/:index', (req, res) => {
         const { index } = req.params
         try {
             for (let i = 0; i < users.length; i++) {
                 if (index == users[i].id) {
-                    users.splice(i,1)
+                    users.splice(i, 1)
                     return res.json(users)
                 }
             }
