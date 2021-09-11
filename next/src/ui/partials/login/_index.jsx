@@ -6,7 +6,8 @@ import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../../../context/AuthContext";
 import Swal from "sweetalert2";
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress, Link } from "@material-ui/core";
+import { Box } from "@material-ui/system";
 
 const LoginIndexComponent = () => {
   const [carregando, setCarregando] = useState(false);
@@ -46,14 +47,24 @@ const LoginIndexComponent = () => {
           required
           {...register("password")}
         />
-        <RoundedButton
-          sx={{ width: "200px" }}
-          variant={"contained"}
-          type={"submit"}
-          disabled={carregando}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            mt: 3,
+          }}
         >
-          {carregando ? <CircularProgress size={20} /> : "Acessar"}
-        </RoundedButton>
+          <RoundedButton
+            sx={{ width: "200px" }}
+            variant={"contained"}
+            type={"submit"}
+            disabled={carregando}
+          >
+            {carregando ? <CircularProgress size={20} /> : "Acessar"}
+          </RoundedButton>
+          <Link href={"/registration"}>novo cadastro</Link>
+        </Box>
       </form>
     </ContainerStyled>
   );

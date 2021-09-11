@@ -1,6 +1,6 @@
 import { parseCookies } from "nookies";
 import AdminIndex from "../ui/partials/userAdm";
-const AdminPage = () => <AdminIndex />;
+const EditPage = () => <AdminIndex />;
 
 export async function getServerSideProps(ctx) {
   const { ["nextauth-token"]: token } = parseCookies(ctx);
@@ -21,4 +21,4 @@ export async function getServerSideProps(ctx) {
   };
 }
 
-export default AdminPage;
+export default EditPage;

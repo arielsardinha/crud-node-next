@@ -1,4 +1,4 @@
-import { Button, Fab } from "@material-ui/core";
+import { Button, CircularProgress, Fab } from "@material-ui/core";
 import { Edit, HighlightOff } from "@material-ui/icons";
 import { useRouter } from "next/router";
 import { Box } from "@material-ui/system";
@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 
 const AdminIndex = () => {
   const router = useRouter();
+  const [carregando, setCarregando] = useState(false);
   const [users, setUser] = useState([]);
   useEffect(() => {
     api.get("/user").then(({ data }) => setUser(data));
@@ -50,7 +51,8 @@ const AdminIndex = () => {
       })
       .then((result) => {
         if (result.isConfirmed) {
-          api.delete(`/delete/${id}`).then(() => {
+          api.delete(`/delete/${id}`).then(({ data }) => {
+            setUser(data);
             swalWithBootstrapButtons.fire("Deletado!", "success");
           });
         } else if (
@@ -66,10 +68,16 @@ const AdminIndex = () => {
     <>
       <Box sx={{ textAlign: "center", mt: 2 }}>
         <Button
+          sx={{ width: "200px" }}
           variant={"contained"}
-          onClick={() => router.push("/registration")}
+          disabled={carregando}
+          onClick={() => {
+            setCarregando(true)
+            router.push("/registration")
+            
+          }}
         >
-          novo usuário
+          {carregando ? <CircularProgress size={20} /> : "novo usuário"}
         </Button>
       </Box>
       {users.map((user, index) => (

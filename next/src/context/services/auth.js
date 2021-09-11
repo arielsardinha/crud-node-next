@@ -7,5 +7,9 @@ export async function signInRequest(data) {
 }
 
 export async function registerRequest(data) {
-    await api.post('/user/register', data)
+    return await api.post('/user/register', data).then(() => {
+        return { date: 'concluido' }
+    }).catch(() => {
+        return { date: 'erro inesperado' }
+    })
 }

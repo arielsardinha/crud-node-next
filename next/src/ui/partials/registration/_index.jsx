@@ -1,19 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import RoundedButton from "../../inputs/RoundedButton/RoundedButton";
 import TextFieldStyled from "../../inputs/TextField/TextField";
 import { ContainerStyled } from "./_index.styled";
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../../../context/AuthContext";
+import { CircularProgress } from "@material-ui/core";
+import router from "next/router";
+import Swal from "sweetalert2";
 
 const RegistrationComponent = () => {
+  const [carregando, setCarregando] = useState(false);
   const { register, handleSubmit } = useForm();
 
   //  pega a função que esta dentro da AuthContext
   const { registerIn } = useContext(AuthContext);
 
   async function handleSignIn(data) {
-    await registerIn(data);
+    setCarregando(true);
+    const date = await registerIn(data);
+    if (date === "concluido") {
+      router.push("/");
+    } else {
+      setCarregando(false);
+      Swal.fire("Erro inesperado!", "question");
+    }
   }
 
   return (
@@ -34,6 +45,7 @@ const RegistrationComponent = () => {
           required
           {...register("idade")}
         />
+        
         <TextFieldStyled
           label={"data de nascimento"}
           fullWidth
@@ -62,8 +74,13 @@ const RegistrationComponent = () => {
           required
           {...register("password")}
         />
-        <RoundedButton variant={"contained"} type={"submit"}>
-          Cadastrar
+        <RoundedButton
+          sx={{ width: "200px" }}
+          variant={"contained"}
+          type={"submit"}
+          disabled={carregando}
+        >
+          {carregando ? <CircularProgress size={20} /> : "Acessar"}
         </RoundedButton>
       </form>
     </ContainerStyled>

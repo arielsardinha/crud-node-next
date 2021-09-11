@@ -13,7 +13,7 @@ export function AuthProvider({ children }) {
     // ? retorna os dados da api
     async function signIn({ email, password }) {
         const { token, data } = await signInRequest({ email, password })
-        
+
         if (token !== 0) {
             localStorage.setItem('myToken', token)
             setData(data)
@@ -28,9 +28,9 @@ export function AuthProvider({ children }) {
         return data
     }
 
-    async function registerIn(data) {
-        await registerRequest(data)
-        router.push('/')
+    async function registerIn({ name, idade, data, cpf, email, password }) {
+        const { date } = await registerRequest({ name, idade, data, cpf, email, password })
+        return date
     }
 
     return (
