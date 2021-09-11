@@ -8,7 +8,7 @@ module.exports = function () {
     app.use(express.json())
     app.use(cors())
     // app.use(express.urlencoded({ extended: true }))
-    const count = 2
+    var count = 2
 
     const users =
         [
@@ -39,20 +39,30 @@ module.exports = function () {
         ]
 
     app.post('/user/register', async (req, res) => {
-        const { email, name, idade, data, password, cpf, token = '', admin = false } = await req.body
-        count += count
-        users.push({ email, name, idade, password, token, admin, id: count, data, cpf, newDate: new Date() })
-        return res.json(users)
+        const { email, name, idade, data, password, cpf, admin = false } = await req.body
+        try {
+            count += count
+            users.push({ email, name, idade, password, admin, id: count, data, cpf, newDate: new Date() })
+            return res.json(users)
+        } catch (error) {
+            return res.sendStatus(400)
+        }
+
     })
 
     app.post('/user/token', async (req, res) => {
         const { email, password } = await req.body
         for (let i = 0; i <= users.length; i++) {
-            if (email === users[i].email && password === users[i].password) {
-                const token = uuid()
-                users[i].token = token
-                return res.json({ data: users[i], token: token })
+            try {
+                if (email === users[i].email && password === users[i].password) {
+                    const token = uuid()
+                    users[i].token = token
+                    return res.json({ data: users[i], token: token })
+                }
+            } catch (error) {
+                return res.sendStatus(400)
             }
+
         }
     })
 
@@ -74,8 +84,16 @@ module.exports = function () {
 
     app.delete('/delete/:index', (req, res) => {
         const { index } = req.params
-        users.splice(index, 1)
-        return res.json(users)
+        try {
+            for (let i = 0; i < users.length; i++) {
+                if (index == users[i].id) {
+                    users.splice(i,1)
+                    return res.json(users)
+                }
+            }
+        } catch (error) {
+            return res.sendStatus(400)
+        }
     })
     return app;
 }
