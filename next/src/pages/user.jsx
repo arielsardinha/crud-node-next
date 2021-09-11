@@ -1,5 +1,6 @@
 import { parseCookies } from "nookies";
 import UserIndex from "../ui/partials/user";
+
 const UserPage = () => <UserIndex />;
 
 export async function getServerSideProps(ctx) {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "../../context/services/api";
 import UseInformation from "../userInformation/UserInformation";
-import { ContainerUserInformation, BoxValue } from "./_user.stye";
+import { ContainerUserInformation, BoxValue } from "./user.stye";
 
 const UserIndex = () => {
   const [users, setUser] = useState([]);
