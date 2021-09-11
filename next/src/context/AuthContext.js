@@ -13,15 +13,26 @@ export function AuthProvider({ children }) {
     // ? retorna os dados da api
     async function signIn({ email, password }) {
         const { token, data } = await signInRequest({ email, password })
-        localStorage.setItem('myToken', token)
-        setData(data)
-        setCookie(undefined, "nextauth-token", token, { maxAge: 60 * 60 * 1, })
-        router.push('/user')
+        
+        if (token !== 0) {
+            localStorage.setItem('myToken', token)
+            setData(data)
+            setCookie(undefined, "nextauth-token", token, { maxAge: 60 * 60 * 1, })
+            if (data.admin === true) {
+                router.push('/admin')
+            } else if (data.admin === false) {
+                router.push('/user')
+            }
+        }
+
+        return data
     }
+
     async function registerIn(data) {
         await registerRequest(data)
-        router.push('/login')
+        router.push('/')
     }
+
     return (
         <AuthContext.Provider value={{ signIn, data, registerIn }}>
             {children}

@@ -1,5 +1,4 @@
 import LoginIndexComponent from "../ui/partials/login/_index";
-import { parseCookies } from "nookies";
 export const getStaticProps = async () => {
   return {
     props: {
