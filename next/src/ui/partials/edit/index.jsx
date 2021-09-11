@@ -1,26 +1,25 @@
-import React, { useState } from "react";
-import RoundedButton from "../../inputs/RoundedButton/RoundedButton";
-import TextFieldStyled from "../../inputs/TextField/TextField";
-import { ContainerStyled } from "./_index.styled";
-import { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { AuthContext } from "../../../context/AuthContext";
 import { CircularProgress } from "@material-ui/core";
 import router from "next/router";
 import Swal from "sweetalert2";
+import { ContainerStyled } from "../registration/_index.styled";
+import { TextFieldStyled } from "../../inputs/TextField/TextField.styled";
+import RoundedButton from "../../inputs/RoundedButton/RoundedButton";
+import { AuthContext } from "../../../context/AuthContext";
 
-const RegistrationComponent = () => {
+const EditUserIndex = () => {
   const [carregando, setCarregando] = useState(false);
   const { register, handleSubmit } = useForm();
 
   //  pega a função que esta dentro da AuthContext
-  const { registerIn } = useContext(AuthContext);
+  const { editUser } = useContext(AuthContext);
 
   async function handleSignIn(data) {
     setCarregando(true);
-    const date = await registerIn(data);
-    if (date === "concluido") {
-      router.push("/");
+    const dateEdit = await editUser(data);
+    if (dateEdit === "concluido") {
+      router.push("/admin");
     } else {
       setCarregando(false);
       Swal.fire("Erro inesperado!", "question");
@@ -29,7 +28,7 @@ const RegistrationComponent = () => {
 
   return (
     <ContainerStyled>
-      <h1>ATUALIZAR</h1>
+      <h1>CADASTRO</h1>
       <form onSubmit={handleSubmit(handleSignIn)}>
         <TextFieldStyled
           label={"Nome"}
@@ -87,4 +86,4 @@ const RegistrationComponent = () => {
   );
 };
 
-export default RegistrationComponent;
+export default EditUserIndex;

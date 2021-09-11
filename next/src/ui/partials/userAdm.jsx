@@ -1,11 +1,12 @@
 import { Button, CircularProgress, Fab } from "@material-ui/core";
-import { Edit, HighlightOff } from "@material-ui/icons";
+import { Edit, HighlightOff, Search } from "@material-ui/icons";
 import { useRouter } from "next/router";
 import { Box } from "@material-ui/system";
 import { useEffect, useState } from "react";
 import { api } from "../../context/services/api";
 import UseInformation from "../userInformation/UserInformation";
 import { ContainerUserInformation, BoxValue } from "./user.stye";
+import { TextField } from "@material-ui/core";
 import Swal from "sweetalert2";
 
 const AdminIndex = () => {
@@ -72,13 +73,25 @@ const AdminIndex = () => {
           variant={"contained"}
           disabled={carregando}
           onClick={() => {
-            setCarregando(true)
-            router.push("/registration")
-            
+            setCarregando(true);
+            router.push("/registration");
           }}
         >
           {carregando ? <CircularProgress size={20} /> : "novo usuário"}
         </Button>
+      </Box>
+      <Box
+        sx={{
+          textAlign: "right",
+          mr: 4,
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+        }}
+      >
+        <Search></Search>
+
+        <TextField></TextField>
       </Box>
       {users.map((user, index) => (
         <div key={user.id}>

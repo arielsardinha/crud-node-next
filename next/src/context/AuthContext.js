@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
 import { useRouter } from "next/router"
-import { registerRequest, signInRequest } from "./services/auth";
+import { registerRequest, signInRequest, editUser } from "./services/auth";
 import { setCookie } from "nookies";
 
 export const AuthContext = createContext();
@@ -33,8 +33,13 @@ export function AuthProvider({ children }) {
         return date
     }
 
+    async function editUser({ name, idade, data, cpf, email, password }){
+        const { date } = await editRequest({ name, idade, data, cpf, email, password })
+        return date
+    }
+
     return (
-        <AuthContext.Provider value={{ signIn, data, registerIn }}>
+        <AuthContext.Provider value={{ signIn, data, registerIn, editUser }}>
             {children}
         </AuthContext.Provider>
     )

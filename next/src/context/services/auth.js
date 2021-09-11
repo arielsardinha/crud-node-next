@@ -13,3 +13,7 @@ export async function registerRequest(data) {
         return { date: 'erro inesperado' }
     })
 }
+
+export async function editRequest(data) {
+    return await api.put('/edit/', data)
+}
