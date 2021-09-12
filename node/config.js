@@ -13,7 +13,7 @@ module.exports = function () {
     const users =
         [
             {
-                id: 0,
+                id: 1,
                 email: 'email@email',
                 name: 'Ariel',
                 idade: 28,
@@ -25,7 +25,7 @@ module.exports = function () {
                 admin: true
             },
             {
-                id: 1,
+                id: 2,
                 email: 'teste@teste',
                 name: 'Paulo',
                 idade: 40,
@@ -64,7 +64,6 @@ module.exports = function () {
             } catch (error) {
                 return res.sendStatus(400)
             }
-
         }
     })
 
@@ -73,13 +72,31 @@ module.exports = function () {
         return res.json(users)
     })
 
-    // return por nome
-    app.get('/user/:index', async (req, res) => {
-        const { index } = await req.params
+    // return por nome search
+    app.get('/user/:name', (req, res) => {
+        const { name } = req.params
         try {
             for (let i = 0; i < users.length; i++) {
-                if (index === users[i].name)
+                if (name == users[i].name) {
+                    return res.json([users[i]])
+                } else if (name == '') {
+                    return res.json(users)
+                } else {
+                    return res.sendStatus(400)
+                }
+            }
+        } catch (error) {
+            return res.sendStatus(400)
+        }
+    })
+
+    app.get('/user/edit/:id', (req, res) => {
+        const { id } = req.params
+        try {
+            for (let i = 0; i < users.length; i++) {
+                if (id == users[i].id) {
                     return res.json(users[i])
+                }
             }
         } catch (error) {
             return res.sendStatus(400)
@@ -88,10 +105,27 @@ module.exports = function () {
 
     // EDITA
     app.put('/edit/:index', async (req, res) => {
-        const { email, name, idade, data, password, cpf, token = '', admin = false } = await req.body
         const { index } = req.params
-        users[index] = { email, name, idade, password, token, admin, data, cpf }
-        return res.json(users)
+        const
+            {
+                id = users[index].id,
+                newDate = users[index].newDate,
+                token = users[index].token,
+                email = users[index].email,
+                name = users[index].name,
+                idade = users[index].idade,
+                data = users[index].data,
+                password = users[index].password,
+                cpf = users[index].cpf,
+                admin = users[index].admin
+
+            } = await req.body
+        try {
+            users[index] = { email, name, idade, password, admin, data, cpf }
+            return res.json(users)
+        } catch (error) {
+            return res.sendStatus(400)
+        }
     })
 
     // deleta
