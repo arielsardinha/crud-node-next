@@ -11,6 +11,7 @@ import { Box } from "@material-ui/system";
 
 const LoginIndexComponent = () => {
   const [carregando, setCarregando] = useState(false);
+  const [erro, setErro] = useState(false);
   const { register, handleSubmit } = useForm();
 
   //  pega a função que esta dentro da AuthContext
@@ -26,7 +27,7 @@ const LoginIndexComponent = () => {
         text: "Senha ou Email incorreto",
         icon: "error",
         confirmButtonText: "Cool",
-      });
+      }).then(() => setErro(true));
     }
   }
 
@@ -36,15 +37,19 @@ const LoginIndexComponent = () => {
         <TextFieldStyled
           label={"Email"}
           fullWidth
+          error={erro}
           type="email"
           required
+          onFocus={() => setErro(false)}
           {...register("email")}
         />
         <TextFieldStyled
           label={"Senha"}
           fullWidth
           type="password"
+          error={erro}
           required
+          onFocus={() => setErro(false)}
           {...register("password")}
         />
         <Box

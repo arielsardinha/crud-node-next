@@ -1,15 +1,16 @@
 import React, { useState } from "react";
+import { useContext } from "react";
+import { useForm } from "react-hook-form";
+import router from "next/router";
+import Swal from "sweetalert2";
+import { Box } from "@material-ui/system";
+import { CircularProgress } from "@material-ui/core";
 import RoundedButton from "../../inputs/RoundedButton/RoundedButton";
 import TextFieldStyled from "../../inputs/TextField/TextField";
 import { ContainerStyled } from "./_index.styled";
-import { useContext } from "react";
-import { useForm } from "react-hook-form";
 import { AuthContext } from "../../../context/AuthContext";
-import { CircularProgress } from "@material-ui/core";
-import router from "next/router";
-import Swal from "sweetalert2";
 
-const RegistrationComponent = () => {
+const UserRegistration = () => {
   const [carregando, setCarregando] = useState(false);
   const { register, handleSubmit } = useForm();
 
@@ -29,7 +30,7 @@ const RegistrationComponent = () => {
 
   return (
     <ContainerStyled>
-      <h1>ATUALIZAR</h1>
+      <h1>REGISTRAR</h1>
       <form onSubmit={handleSubmit(handleSignIn)}>
         <TextFieldStyled
           label={"Nome"}
@@ -45,7 +46,7 @@ const RegistrationComponent = () => {
           required
           {...register("idade")}
         />
-        
+
         <TextFieldStyled
           label={"data de nascimento"}
           fullWidth
@@ -74,17 +75,19 @@ const RegistrationComponent = () => {
           required
           {...register("password")}
         />
-        <RoundedButton
-          sx={{ width: "200px" }}
-          variant={"contained"}
-          type={"submit"}
-          disabled={carregando}
-        >
-          {carregando ? <CircularProgress size={20} /> : "Acessar"}
-        </RoundedButton>
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <RoundedButton
+            sx={{ width: "200px" }}
+            variant={"contained"}
+            type={"submit"}
+            disabled={carregando}
+          >
+            {carregando ? <CircularProgress size={20} /> : "Acessar"}
+          </RoundedButton>
+        </Box>
       </form>
     </ContainerStyled>
   );
 };
 
-export default RegistrationComponent;
+export default UserRegistration;

@@ -1,21 +1,36 @@
 import { Button, CircularProgress, Fab } from "@material-ui/core";
 import { Edit, HighlightOff, Search } from "@material-ui/icons";
+import { Link } from "@material-ui/core";
 import { useRouter } from "next/router";
 import { Box } from "@material-ui/system";
 import { useEffect, useState } from "react";
 import { api } from "../../context/services/api";
 import UseInformation from "../userInformation/UserInformation";
 import { ContainerUserInformation, BoxValue } from "./user.stye";
-import { TextField } from "@material-ui/core";
+import InputSearch from "../inputs/Search/Search";
 import Swal from "sweetalert2";
 
 const AdminIndex = () => {
   const router = useRouter();
   const [carregando, setCarregando] = useState(false);
   const [users, setUser] = useState([]);
+  const [searchUser, setSearchUser] = useState("");
   useEffect(() => {
     api.get("/user").then(({ data }) => setUser(data));
   }, []);
+
+  function search(name) {
+    api
+      .get(`/user/${name}`)
+      .then(({ data }) => setUser(data))
+      .catch(() => {
+        Swal.fire(
+          `Usuário '${name}' não encontrado`,
+          "Escreva o nome completo do usuário ",
+          "question"
+        );
+      });
+  }
 
   function editUser(id) {
     Swal.fire({
@@ -74,11 +89,14 @@ const AdminIndex = () => {
           disabled={carregando}
           onClick={() => {
             setCarregando(true);
-            router.push("/registration");
+            router.push("/registrationAdmin");
           }}
         >
           {carregando ? <CircularProgress size={20} /> : "novo usuário"}
         </Button>
+        <Link sx={{ ml: 5 }} href={"/"}>
+          Sair
+        </Link>
       </Box>
       <Box
         sx={{
@@ -89,10 +107,12 @@ const AdminIndex = () => {
           alignItems: "center",
         }}
       >
-        <Search></Search>
-
-        <TextField></TextField>
+        <InputSearch
+          onChange={(event) => setSearchUser(event.target.value)}
+          onClick={() => search(searchUser)}
+        />
       </Box>
+      {console.log(users)}
       {users.map((user, index) => (
         <div key={user.id}>
           <ContainerUserInformation>

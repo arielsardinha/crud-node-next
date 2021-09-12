@@ -14,6 +14,10 @@ export async function registerRequest(data) {
     })
 }
 
-export async function editRequest(data) {
-    return await api.put('/edit/', data)
+export async function editRequest({ data, id }) {
+    return await api.put(`/edit/${id}`, data).then(() => {
+        return { date: 'concluido' }
+    }).catch(() => {
+        return { date: 'erro inesperado' }
+    })
 }

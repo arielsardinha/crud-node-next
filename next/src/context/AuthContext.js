@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
 import { useRouter } from "next/router"
-import { registerRequest, signInRequest, editUser } from "./services/auth";
+import { registerRequest, signInRequest, editRequest } from "./services/auth";
 import { setCookie } from "nookies";
 
 export const AuthContext = createContext();
@@ -28,13 +28,13 @@ export function AuthProvider({ children }) {
         return data
     }
 
-    async function registerIn({ name, idade, data, cpf, email, password }) {
-        const { date } = await registerRequest({ name, idade, data, cpf, email, password })
+    async function registerIn({ name, idade, data, cpf, email, password, admin }) {
+        const { date } = await registerRequest({ name, idade, data, cpf, email, password, admin })
         return date
     }
 
-    async function editUser({ name, idade, data, cpf, email, password }){
-        const { date } = await editRequest({ name, idade, data, cpf, email, password })
+    async function editUser({ data, id }) {
+        const { date } = await editRequest({ data, id })
         return date
     }
 

@@ -1,4 +1,4 @@
-import RegistrationComponent from "../ui/partials/registration/_index";
+import UserRegistration from "../ui/partials/registration/user";
 export const getStaticProps = async () => {
   return {
     props: {
@@ -7,6 +7,6 @@ export const getStaticProps = async () => {
   };
 };
 
-const RegistrationPage = () => <RegistrationComponent />;
+const RegistrationPage = () => <UserRegistration />;
 
 export default RegistrationPage;
