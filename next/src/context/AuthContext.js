@@ -24,7 +24,6 @@ export function AuthProvider({ children }) {
                 router.push('/user')
             }
         }
-
         return data
     }
 
